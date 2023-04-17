@@ -29,7 +29,7 @@ LIBDIRS		:= $(BLOCKSDS)/libs/libnds \
 
 BUILDDIR	:= build/arm7
 NAME		:= arm7
-ELF			:= $(NAME).elf
+ELF			:= build/$(NAME).elf
 DUMP		:= build/$(NAME).dump
 MAP			:= build/$(NAME).map
 
