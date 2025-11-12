@@ -158,7 +158,7 @@ ARM_CODE void neoDrawFixed()
 				const u32 cacheEntryIndex = tileIndex / TILES_PER_ENTRY;
 				ASSERT(cacheEntryIndex < TILE_TABLE_SIZE);
 				u32 cacheIndex = g_tileTable[cacheEntryIndex];
-				
+
 				//only try to load tiles if we haven't yet loaded TILE_MAX_LOAD
 				if(cacheIndex == CACHE_ENTRY_NULL && tilesUsed < TILE_CACHE_SIZE &&
 				g_tileLoadIndex < TILE_MAX_LOAD) {
@@ -212,13 +212,18 @@ ARM_CODE void neoLoadTiles()
 {
 	const u8* restrict pSrc = g_tileLoadBuffer;
 	u32 i;
-	
+
 	//dma new tiles into video memory
 	for(i = 0; i < g_tileLoadIndex; i++) {
+		DC_FlushRange(pSrc, SPRITE_CACHE_ENTRY_SIZE);
 		dmaCopyWords(3, pSrc, g_tileLoadAddr[i], TILE_CACHE_ENTRY_SIZE);
+		DC_FlushRange(g_tileLoadAddr[i], SPRITE_CACHE_ENTRY_SIZE);
 		pSrc += TILE_CACHE_ENTRY_SIZE;
 	}
-	
-	//dma tilemap buffer
-	dmaCopyWords(3, g_neo->pTileBuffer, (void*)0x0600e000, 64*32*sizeof(u16));
+
+	// dma tilemap buffer
+	u32 dest = (void*)0x0600e000;
+	int size = 64*32*sizeof(u16);
+	dmaCopyWords(3, g_neo->pTileBuffer, dest, size);
+	DC_FlushRange(dest, size);
 }
