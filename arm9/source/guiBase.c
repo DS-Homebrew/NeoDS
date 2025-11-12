@@ -187,7 +187,7 @@ void guiSystemProcess()
 
 	//process commands
 	guiSystemProcessCommand();
-	
+
 	//calculate input data
 	scanKeys();
 	touchRead(&touch);

@@ -1,6 +1,6 @@
 #include "Default.h"
 #include <nds.h>
-#include <fatfs.h>
+#include <fat.h>
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <sys/dir.h>

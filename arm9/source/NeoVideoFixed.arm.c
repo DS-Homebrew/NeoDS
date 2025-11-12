@@ -1,6 +1,7 @@
 #include "Default.h"
 #include <nds/arm9/background.h>
 #include <nds/arm9/video.h>
+#include <nds/arm9/cache.h>
 #include "EmuSystem.h"
 #include "NeoSystem.h"
 #include "NeoVideo.h"
@@ -31,7 +32,7 @@ static u8 g_tileLoadBuffer[TILE_MAX_LOAD * TILE_CACHE_ENTRY_SIZE] ALIGN(32);
 static void* g_tileLoadAddr[TILE_MAX_LOAD] ALIGN(32);
 static u32 g_tileLoadIndex = 0;
 
-ARM_CODE void neoFixedInit()
+void neoFixedInit()
 {
 	s32 i;
 
@@ -57,7 +58,7 @@ ARM_CODE void neoFixedInit()
 	for(i = 0; i < TILE_TABLE_SIZE; i++) {
 		g_tileTable[i] = CACHE_ENTRY_NULL;
 	}
-	
+
 	//load initial tile cache
 	for(i = 0; i < TILE_CACHE_SIZE; i++) {
 		TTileCacheEntry* pEntry = &g_tileCache[i];
@@ -85,7 +86,7 @@ void neoFixedExit()
 
 }
 
-ARM_CODE void neoDrawFixed()
+void neoDrawFixed()
 {
 	//static u32 tileLoadIndex[TILE_MAX_LOAD];
 	const s32 minX = g_videoBounds.minX >> 3;
@@ -133,7 +134,7 @@ ARM_CODE void neoDrawFixed()
 
 	ASSERTMSG(maxX < 64, "x overflow: %d, (%d x %d)", maxX, g_videoBounds.maxX, g_videoBounds.maxY);
 	ASSERTMSG(maxY < 32, "y overflow: %d, (%d x %d)", maxY, g_videoBounds.maxX, g_videoBounds.maxY);
-	
+
 	//figure out what tiles need to be loaded
 	for(mapX = minX; mapX <= maxX; mapX++) {
 		const u16* restrict pMapSrc = &g_neo->pVram[0x7000 + mapX * 32 + minY];
@@ -208,7 +209,7 @@ ARM_CODE void neoDrawFixed()
 	}
 }
 
-ARM_CODE void neoLoadTiles()
+void neoLoadTiles()
 {
 	const u8* restrict pSrc = g_tileLoadBuffer;
 	u32 i;
@@ -222,7 +223,7 @@ ARM_CODE void neoLoadTiles()
 	}
 
 	// dma tilemap buffer
-	u32 dest = (void*)0x0600e000;
+	void* dest = (void*)0x0600e000;
 	int size = 64*32*sizeof(u16);
 	dmaCopyWords(3, g_neo->pTileBuffer, dest, size);
 	DC_FlushRange(dest, size);

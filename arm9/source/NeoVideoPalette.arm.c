@@ -11,7 +11,7 @@ static u32 g_endTransfer;
 static u32 g_loadFixed;
 static u32 g_paletteBank = 0xffffffff;
 
-ARM_CODE void neoVideoPaletteBank(u32 enable)
+void neoVideoPaletteBank(u32 enable)
 {
 	if(g_neo->paletteRamLatch != enable) {
 		g_neo->paletteRamLatch = enable;
@@ -22,7 +22,7 @@ ARM_CODE void neoVideoPaletteBank(u32 enable)
 	}
 }
 
-ARM_CODE void neoPaletteInit()
+void neoPaletteInit()
 {
 	g_nitroPalette = (u16*)neoSystemVramHAlloc(16*KB);
 }
@@ -32,7 +32,7 @@ void neoPaletteExit()
 
 }
 
-ARM_CODE void neoUpdatePalette()
+void neoUpdatePalette()
 {
 	const u16* restrict pSrc = &g_neo->pPalette[g_neo->paletteBank];
 	u16* restrict pDst = &g_nitroPalette[g_neo->paletteBank];
@@ -81,7 +81,7 @@ ARM_CODE void neoUpdatePalette()
 	GFX_CLEAR_COLOR = g_nitroPalette[g_neo->paletteBank + 0x0fff] | (0x1f << 16);
 }
 
-ARM_CODE void neoLoadPalette()
+void neoLoadPalette()
 {
 	if(g_endTransfer > g_startTransfer) {
 		const u16* restrict pSrc = &g_nitroPalette[g_startTransfer * 16];

@@ -96,7 +96,7 @@ static TSpriteDisplayList* g_spriteList;
 #define TEXCOORD_X1 (32<<4)
 #define TEXCOORD_Y1 (32<<20)
 
-ARM_CODE void neoSpriteInit()
+void neoSpriteInit()
 {
 	s32 i;
 
@@ -245,7 +245,7 @@ void neoSpriteExit()
 
 }
 
-ARM_CODE static inline u32 getSpriteIndex(u32 tileControl)
+static inline u32 getSpriteIndex(u32 tileControl)
 {
 	u32 index = (u16)tileControl | ((tileControl & 0x00700000) >> 4);
 	if(!(g_neo->displayControl & 0x08)) {
@@ -259,7 +259,7 @@ ARM_CODE static inline u32 getSpriteIndex(u32 tileControl)
 	return index & g_neo->spriteMask;
 }
 
-ARM_CODE static inline void drawSpriteTile(TSpritePacket* pPacket,
+static inline void drawSpriteTile(TSpritePacket* pPacket,
 								  u32 tileIndex, u32 tileControl)
 {
 	pPacket->texImage = (tileIndex << 4) | //vram offset
@@ -276,7 +276,7 @@ ARM_CODE static inline void drawSpriteTile(TSpritePacket* pPacket,
 		((u32)g_neo->paletteRamLatch << 9);
 }
 
-ARM_CODE void neoDrawSprites()
+void neoDrawSprites()
 {
 	TSpriteDisplayList* const restrict pDisplayList = g_spriteList;
 	u32 lastCache2EntryIndex = -1;
@@ -383,7 +383,7 @@ ARM_CODE void neoDrawSprites()
 				matrixDirty = true;
 				fxTileYPos -= fxYPosClamp;
 			}
-			
+
 			if(fxTileYPos + fxHeight < g_videoBounds.minY || fxTileYPos > g_videoBounds.maxY) {
 				//tile not on screen
 				matrixDirty = true;
@@ -404,13 +404,13 @@ ARM_CODE void neoDrawSprites()
 			g_spriteTransferIndex < SPRITE_MAX_LOAD) {
 				//sprite is not in cache, must be loaded
 				TSpriteTransferEntry* pTransfer = &g_spriteTransfer[g_spriteTransferIndex++];
-				
+
 				//don't unload sprites that were used this frame
 				do {
 					g_cacheIndex = (g_cacheIndex + 1) & (SPRITE_CACHE_COUNT - 1);
 				} while(g_spriteCache[g_cacheIndex].frame == g_frameCount);
 				cache1Index = g_cacheIndex;
-				
+
 				//evict old sprite from cache1
 				ASSERT(cache1Index < SPRITE_CACHE_COUNT);
 				//ASSERT(g_spriteCache[cache1Index].index < SPRITE_TABLE_SIZE);
@@ -521,7 +521,7 @@ ARM_CODE void neoDrawSprites()
 				spritesUsed++;
 				g_spriteCache[cache1Index].frame = g_frameCount;
 			}
-			
+
 			const u32 vramIndex =
 				(cache1Index << SPRITES_PER_ENTRY_SHIFT) +
 				(actualIndex & (SPRITES_PER_ENTRY - 1));
@@ -554,7 +554,7 @@ skipTile:
 	g_spriteCount = GFX_POLYGON_RAM_USAGE;
 }
 
-ARM_CODE void neoLoadSprites()
+void neoLoadSprites()
 {
 	const u8* restrict pSrc = g_spriteLoadBuffer;
 	const TSpriteTransferEntry* restrict pTransfer = g_spriteTransfer;

@@ -1,7 +1,7 @@
 #include "Default.h"
 #include <nds/interrupts.h>
 #include <nds/arm9/input.h>
-#include <fatfs.h>
+#include <fat.h>
 #include <sys/dir.h>
 #include <stdlib.h> //for qsort
 #include <sys/stat.h>
