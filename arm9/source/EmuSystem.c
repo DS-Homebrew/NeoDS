@@ -123,7 +123,7 @@ u32 systemFileSize(s32 file)
 	fstat(file, &fileStat);
 	irqEnable(IRQ_VBLANK | IRQ_VCOUNT);
 	neoResetContext();
-	return fileStat.st_size; 
+	return fileStat.st_size;
 }
 
 bool systemInit()
@@ -134,7 +134,7 @@ bool systemInit()
 	TIMER_DATA(0) = TIMER_FREQ_1024(1000);
 	TIMER_CR(0) = TIMER_DIV_1024 | TIMER_ENABLE | TIMER_IRQ_REQ;
 
-	//powerON(POWER_ALL);
+	powerOn(POWER_ALL);
 
 	bool ramOk = peripheralSlot2Init(SLOT2_PERIPHERAL_EXTRAM);
 	if (ramOk) {
@@ -240,7 +240,7 @@ void systemPanic_d(const char* szFile, u32 line, const char* szMessage, ...)
 void systemWaitKey(const char* szText)
 {
 	u32 keys = 0;
-	
+
 	scanKeys();
 	keysDown();
 	systemWriteLine("%s: Wait", szText);

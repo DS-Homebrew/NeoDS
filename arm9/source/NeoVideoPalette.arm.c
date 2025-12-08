@@ -124,6 +124,5 @@ void neoLoadPalette()
 		}
 		//dmaCopyWords(3, &g_nitroPalette[g_neo->paletteBank], &BG_PALETTE[0], 512);
 		vramSetBankF(VRAM_F_BG_EXT_PALETTE | VRAM_OFFSET(1)); //assign to slots 2, 3
-		DC_InvalidateRange(&g_nitroPalette[g_paletteBank], 512);
 	}
 }
