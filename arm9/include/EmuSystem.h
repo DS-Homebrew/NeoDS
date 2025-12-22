@@ -13,7 +13,6 @@
 //#define FX_ONE (1 << FX_SHIFT)
 //#define FX_TWO (2 << FX_SHIFT)
 
-#define UNCACHED(a) ((void*)((u32)(a)|0x400000))
 #define OFFSET(typeof, field) ((u32)(&((typeof*)0)->field) - (u32)((typeof*)0))
 
 //more cache functions, defined in ExtCache.s

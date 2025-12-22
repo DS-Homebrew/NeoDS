@@ -1,4 +1,5 @@
 #include "Default.h"
+#include <nds/system.h>
 #include "EmuSystem.h"
 #include "NeoSystem.h"
 #include "NeoCpu.h"
@@ -266,9 +267,9 @@ void neoMemoryInit()
 	//load audio rom
 	const u32 audioProgramSize = neoSystemRegionSize(NEOROM_AUDIOPROGRAM);
 	g_audioProgram = systemRamAlloc(audioProgramSize);
-	neoSystemLoadRegion(NEOROM_AUDIOPROGRAM, UNCACHED(g_audioProgram), audioProgramSize);
+	neoSystemLoadRegion(NEOROM_AUDIOPROGRAM, memUncached(g_audioProgram), audioProgramSize);
 	NEOIPC->audioProgramSize = audioProgramSize;
-	NEOIPC->pAudioProgram0 = UNCACHED(g_audioProgram);
+	NEOIPC->pAudioProgram0 = memUncached(g_audioProgram);
 	NEOIPC->audioRomSize = neoSystemRegionSize(NEOROM_AUDODATA);
 	
 	if(g_neo->romBankCount == 0) {

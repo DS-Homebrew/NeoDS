@@ -1,4 +1,5 @@
 #include "Default.h"
+#include <nds/system.h>
 #include <nds/arm9/background.h>
 #include <nds/arm9/video.h>
 #include <nds/arm9/cache.h>
@@ -164,7 +165,7 @@ void neoDrawFixed()
 				if(cacheIndex == CACHE_ENTRY_NULL && tilesUsed < TILE_CACHE_SIZE &&
 				g_tileLoadIndex < TILE_MAX_LOAD) {
 					//tile is not in cache, must be loaded
-					void* pLoadAddr = UNCACHED(&g_tileLoadBuffer[g_tileLoadIndex * TILE_CACHE_ENTRY_SIZE]);
+					void* pLoadAddr = memUncached(&g_tileLoadBuffer[g_tileLoadIndex * TILE_CACHE_ENTRY_SIZE]);
 					//don't unload tiles that were used this frame
 					do {
 						g_cacheIndex++;

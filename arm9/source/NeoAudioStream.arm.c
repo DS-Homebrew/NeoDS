@@ -1,5 +1,6 @@
 #include "Default.h"
 #include <nds/arm9/cache.h>
+#include <nds/system.h>
 #include "EmuSystem.h"
 #include "NeoSystem.h"
 #include "NeoIPC.h"
@@ -149,8 +150,8 @@ void neoAudioStreamReset()
 {
 	u32 i;
 	for(i = 0; i < 7; i++)  {
-		NEOIPC->pAdpcmBuffer[i] = UNCACHED(g_adpcmaBuffer[i]);
-		NEOIPC->adpcmControl[i] = UNCACHED(g_adpcmControl[i]);
+		NEOIPC->pAdpcmBuffer[i] = memUncached(g_adpcmaBuffer[i]);
+		NEOIPC->adpcmControl[i] = memUncached(g_adpcmControl[i]);
 		NEOIPC->adpcmQueuePos7[i] = 0;
 		NEOIPC->adpcmQueuePos9[i] = 0;
 		NEOIPC->adpcmaFinished[i] = 0;

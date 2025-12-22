@@ -1,4 +1,5 @@
 #include "Default.h"
+#include <nds/system.h>
 #include <nds/arm9/background.h>
 #include <nds/arm9/video.h>
 #include <nds/dma.h>
@@ -458,7 +459,7 @@ void neoDrawSprites()
 							//lock slot2 before dldi
 							systemSlot2Lock();
 							//load into ram
-							neoSystemLoadSprite2(UNCACHED(g_spriteReadBuffer), cache2EntryIndex);
+							neoSystemLoadSprite2(memUncached(g_spriteReadBuffer), cache2EntryIndex);
 							//dma a copy into secondary cache in slot2
 							systemSlot2Unlock();
 							DMA_SRC(3) = (u32)g_spriteReadBuffer;
